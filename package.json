@@ -1,6 +1,6 @@
 {
   "name": "@coder-ka/pistol",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "PISTOL is subset language of LISTOL.",
   "bin": "./dist/bin.js",
   "main": "./dist/out.esm.js",
@@ -25,7 +25,8 @@
     "watch:esm": "npm run build:esm -- --watch",
     "watch:cjs": "npm run build:cjs -- --watch",
     "watch:type": "npm run build:type -- --watch",
-    "watch": "concurrently \"npm run watch:esm\" \"npm run watch:cjs\" \"npm run watch:type\""
+    "watch": "concurrently \"npm run watch:esm\" \"npm run watch:cjs\" \"npm run watch:type\"",
+    "test": "tsx ./test/index.ts"
   },
   "directories": {
     "lib": "lib"
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@types/node": "^18.13.0",
     "concurrently": "^7.6.0",
+    "tsx": "^3.12.3",
     "typescript": "^4.9.5"
   }
 }

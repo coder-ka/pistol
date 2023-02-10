@@ -24,7 +24,7 @@ export function parse(code: string): Node[] {
   }
 
   function toFnItem(str: string): FnItem {
-    const match = str.match(/^(.+)(\([^\)]+\))$/);
+    const match = str.match(/^([^\(]+)\((.+)\)$/);
     if (match === null) return { name: str, args: [] };
 
     const [_, name, argsText] = match;
