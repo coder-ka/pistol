@@ -2,6 +2,7 @@
   "name": "pistol",
   "version": "0.0.1",
   "description": "PISTOL is subset language of LISTOL.",
+  "bin": "./dist/bin.js",
   "main": "./dist/out.esm.js",
   "module": "./dist/out.esm.js",
   "exports": {
@@ -16,10 +17,11 @@
     "/types"
   ],
   "scripts": {
-    "build:esm": "esbuild lib/index.ts --bundle --outfile=dist/out.esm.js",
-    "build:cjs": "esbuild lib/index.ts --bundle --outfile=dist/out.cjs.js",
+    "build:bin": "esbuild lib/bin.ts --bundle --platform=node --outfile=dist/bin.js",
+    "build:esm": "esbuild lib/index.ts --bundle --format=esm --outfile=dist/out.esm.js",
+    "build:cjs": "esbuild lib/index.ts --bundle --format=cjs --outfile=dist/out.cjs.js",
     "build:type": "tsc --project tsconfig.json --declaration --emitDeclarationOnly",
-    "build": "concurrently \"npm run build:type\" \"npm run build:esm\" \"npm run build:cjs\"",
+    "build": "concurrently \"npm run build:type\" \"npm run build:esm\" \"npm run build:cjs\" \"npm run build:bin\"",
     "watch:esm": "npm run build:esm -- --watch",
     "watch:cjs": "npm run build:cjs -- --watch",
     "watch:type": "npm run build:type -- --watch",
@@ -33,6 +35,7 @@
   "repository": "coder-ka/pistol",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^18.13.0",
     "concurrently": "^7.6.0",
     "typescript": "^4.9.5"
   }
