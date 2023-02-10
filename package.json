@@ -1,0 +1,39 @@
+{
+  "name": "pistol",
+  "version": "0.0.1",
+  "description": "PISTOL is subset language of LISTOL.",
+  "main": "./dist/out.esm.js",
+  "module": "./dist/out.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/out.esm.js",
+      "require": "./dist/out.cjs.js"
+    }
+  },
+  "types": "./types/main.d.ts",
+  "files": [
+    "/dist",
+    "/types"
+  ],
+  "scripts": {
+    "build:esm": "esbuild lib/index.ts --bundle --outfile=dist/out.esm.js",
+    "build:cjs": "esbuild lib/index.ts --bundle --outfile=dist/out.cjs.js",
+    "build:type": "tsc --project tsconfig.json --declaration --emitDeclarationOnly",
+    "build": "concurrently \"npm run build:type\" \"npm run build:esm\" \"npm run build:cjs\"",
+    "watch:esm": "npm run build:esm -- --watch",
+    "watch:cjs": "npm run build:cjs -- --watch",
+    "watch:type": "npm run build:type -- --watch",
+    "watch": "concurrently \"npm run watch:esm\" \"npm run watch:cjs\" \"npm run watch:type\""
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "KOeda <coder.ka.issues@gmail.com>",
+  "repository": "coder-ka/pistol",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "typescript": "^4.9.5"
+  }
+}
