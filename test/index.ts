@@ -1,15 +1,6 @@
 import assert from "assert";
 import { parse } from "../lib/index";
 
-console.log(
-  JSON.stringify(
-    parse(`
-- test(a,b) test(c,)
-  - test
-  - test(d(e))`)
-  )
-);
-
 assert.deepStrictEqual(
   parse(`
 - test(a,b) test(c,)
@@ -45,7 +36,7 @@ assert.deepStrictEqual(
         {
           items: [
             {
-              name: "c",
+              name: "test",
               args: [],
             },
           ],
@@ -58,7 +49,7 @@ assert.deepStrictEqual(
               args: [
                 {
                   name: "d",
-                  arg: [
+                  args: [
                     {
                       name: "e",
                       args: [],
