@@ -1,67 +1,79 @@
 import assert from "assert";
 import { parse } from "../lib/index";
 
-assert.deepStrictEqual(
-  parse(`
+const actual = parse(`
 - test(a,b) test(c,)
   - test
-  - test(d(e))`),
-  [
-    {
-      items: [
-        {
+  - test(d(e))`);
+
+assert.deepStrictEqual(actual, [
+  {
+    items: [
+      {
+        type: "fn",
+        value: {
           name: "test",
           args: [
             {
-              name: "a",
-              args: [],
+              type: "fn",
+              value: { type: "fn", value: { name: "a", args: [] } },
             },
             {
-              name: "b",
-              args: [],
+              type: "fn",
+              value: { type: "fn", value: { name: "b", args: [] } },
             },
           ],
         },
-        {
+      },
+      {
+        type: "fn",
+        value: {
           name: "test",
           args: [
             {
-              name: "c",
-              args: [],
+              type: "fn",
+              value: { type: "fn", value: { name: "c", args: [] } },
             },
           ],
         },
-      ],
-      children: [
-        {
-          items: [
-            {
-              name: "test",
-              args: [],
-            },
-          ],
-          children: [],
-        },
-        {
-          items: [
-            {
+      },
+    ],
+    children: [
+      {
+        items: [{ type: "fn", value: { name: "test", args: [] } }],
+        children: [],
+      },
+      {
+        items: [
+          {
+            type: "fn",
+            value: {
               name: "test",
               args: [
                 {
-                  name: "d",
-                  args: [
-                    {
-                      name: "e",
-                      args: [],
+                  type: "fn",
+                  value: {
+                    type: "fn",
+                    value: {
+                      name: "d",
+                      args: [
+                        {
+                          type: "fn",
+                          value: {
+                            type: "fn",
+                            value: { name: "e", args: [] },
+                          },
+                        },
+                      ],
                     },
-                  ],
+                  },
                 },
               ],
             },
-          ],
-          children: [],
-        },
-      ],
-    },
-  ]
-);
+          },
+        ],
+        children: [],
+      },
+    ],
+  },
+]);

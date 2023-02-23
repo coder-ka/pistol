@@ -1,41 +1,18 @@
-import { parse as parseListol, Node as LNode } from "listol";
-
-export type FnItem = {
-  name: string;
-  args: FnItem[];
-};
+import { parse as parseListol, Node as ListolNode } from "listol";
+import { parsePistolItem, PistolItem } from "./pistol-item";
 
 export type Node = {
-  items: FnItem[];
+  items: PistolItem;
   children: Node[];
 };
 
 export function parse(code: string): Node[] {
   const nodes = parseListol(code);
 
-  function lnode2pnode(node: LNode): Node {
+  function lnode2pnode(node: ListolNode): Node {
     return {
-      items: node.text
-        .split(" ")
-        .filter((x) => x !== "")
-        .map(toFnItem),
+      items: parsePistolItem(node.text),
       children: node.children.map(lnode2pnode),
-    };
-  }
-
-  function toFnItem(str: string): FnItem {
-    const match = str.match(/^([^\(]+)\((.+)\)$/);
-    if (match === null) return { name: str, args: [] };
-
-    const [_, name, argsText] = match;
-
-    return {
-      name,
-      args: argsText
-        .split(",")
-        .map((x) => x.trim())
-        .filter((x) => x !== "")
-        .map(toFnItem),
     };
   }
 

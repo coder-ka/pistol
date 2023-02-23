@@ -22,21 +22,66 @@ converted JSON example:
   {
     "items": [
       {
-        "name": "test",
-        "args": [
-          { "name": "a", "args": [] },
-          { "name": "b", "args": [] }
-        ]
+        "type": "fn",
+        "value": {
+          "name": "test",
+          "args": [
+            {
+              "type": "fn",
+              "value": { "type": "fn", "value": { "name": "a", "args": [] } }
+            },
+            {
+              "type": "fn",
+              "value": { "type": "fn", "value": { "name": "b", "args": [] } }
+            }
+          ]
+        }
       },
-      { "name": "test", "args": [{ "name": "c", "args": [] }] }
+      {
+        "type": "fn",
+        "value": {
+          "name": "test",
+          "args": [
+            {
+              "type": "fn",
+              "value": { "type": "fn", "value": { "name": "c", "args": [] } }
+            }
+          ]
+        }
+      }
     ],
     "children": [
-      { "items": [{ "name": "test", "args": [] }], "children": [] },
+      {
+        "items": [{ "type": "fn", "value": { "name": "test", "args": [] } }],
+        "children": []
+      },
       {
         "items": [
           {
-            "name": "test",
-            "args": [{ "name": "d", "args": [{ "name": "e", "args": [] }] }]
+            "type": "fn",
+            "value": {
+              "name": "test",
+              "args": [
+                {
+                  "type": "fn",
+                  "value": {
+                    "type": "fn",
+                    "value": {
+                      "name": "d",
+                      "args": [
+                        {
+                          "type": "fn",
+                          "value": {
+                            "type": "fn",
+                            "value": { "name": "e", "args": [] }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
           }
         ],
         "children": []
