@@ -59,15 +59,15 @@ const item = or(
   )
 );
 
-type Arg = GetExprValue<typeof item>;
-function args(): Expression<Arg[]> {
+type Item = GetExprValue<typeof item>;
+function args(): Expression<Item[]> {
   const rest = map(opt(seq`${trim(comma)}${opt(lazy(args))}`), (value) => {
     if (value === undefined) return undefined;
 
     return value[0];
   });
 
-  return map(seq<Arg | Arg[] | undefined>`${trim(item)}${rest}`, (value) => {
+  return map(seq<Item | Item[] | undefined>`${trim(item)}${rest}`, (value) => {
     return value.flatMap((x) =>
       x === undefined ? [] : Array.isArray(x) ? x : [x]
     );
@@ -76,7 +76,7 @@ function args(): Expression<Arg[]> {
 
 type Fn = {
   name: string;
-  args: Arg[];
+  args: Item[];
 };
 function fn(): Expression<Fn> {
   const name = map(word(), (name) => ({ name }));
@@ -91,7 +91,7 @@ function fn(): Expression<Fn> {
     }
   );
 
-  return map(seq<{ name: string } | Arg[]>`${name}${callArgs}`, (value) => {
+  return map(seq<{ name: string } | Item[]>`${name}${callArgs}`, (value) => {
     // TODO enhance seq type inference
     const name = value[0];
     if (Array.isArray(name)) return null as never;
@@ -105,8 +105,8 @@ function fn(): Expression<Fn> {
   });
 }
 
-export type PistolItem = Fn[];
-const pistolItem = map(zom(or(whitespaces, fn())), (value) =>
+export type PistolItem = Item[];
+const pistolItem = map(zom(or(whitespaces, item)), (value) =>
   value.flatMap((x) => (x === undefined ? [] : [x]))
 );
 

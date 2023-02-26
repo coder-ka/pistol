@@ -16,11 +16,11 @@ assert.deepStrictEqual(actual, [
           args: [
             {
               type: "fn",
-              value: { type: "fn", value: { name: "a", args: [] } },
+              value: { name: "a", args: [] },
             },
             {
               type: "fn",
-              value: { type: "fn", value: { name: "b", args: [] } },
+              value: { name: "b", args: [] },
             },
           ],
         },
@@ -32,7 +32,7 @@ assert.deepStrictEqual(actual, [
           args: [
             {
               type: "fn",
-              value: { type: "fn", value: { name: "c", args: [] } },
+              value: { name: "c", args: [] },
             },
           ],
         },
@@ -53,19 +53,13 @@ assert.deepStrictEqual(actual, [
                 {
                   type: "fn",
                   value: {
-                    type: "fn",
-                    value: {
-                      name: "d",
-                      args: [
-                        {
-                          type: "fn",
-                          value: {
-                            type: "fn",
-                            value: { name: "e", args: [] },
-                          },
-                        },
-                      ],
-                    },
+                    name: "d",
+                    args: [
+                      {
+                        type: "fn",
+                        value: { name: "e", args: [] },
+                      },
+                    ],
                   },
                 },
               ],
