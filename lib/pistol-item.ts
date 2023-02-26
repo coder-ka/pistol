@@ -42,7 +42,7 @@ const numberLiteral = map(notEmpty(regex(/\d*(\.\d+)?/)), (value: string) => ({
   value: Number(value),
 }));
 
-const arg = or(
+const item = or(
   nullLiteral,
   or(
     booleanLiteral,
@@ -59,7 +59,7 @@ const arg = or(
   )
 );
 
-type Arg = GetExprValue<typeof arg>;
+type Arg = GetExprValue<typeof item>;
 function args(): Expression<Arg[]> {
   const rest = map(opt(seq`${trim(comma)}${opt(lazy(args))}`), (value) => {
     if (value === undefined) return undefined;
@@ -67,7 +67,7 @@ function args(): Expression<Arg[]> {
     return value[0];
   });
 
-  return map(seq<Arg | Arg[] | undefined>`${trim(arg)}${rest}`, (value) => {
+  return map(seq<Arg | Arg[] | undefined>`${trim(item)}${rest}`, (value) => {
     return value.flatMap((x) =>
       x === undefined ? [] : Array.isArray(x) ? x : [x]
     );
@@ -75,11 +75,8 @@ function args(): Expression<Arg[]> {
 }
 
 type Fn = {
-  type: "fn";
-  value: {
-    name: string;
-    args: Arg[];
-  };
+  name: string;
+  args: Arg[];
 };
 function fn(): Expression<Fn> {
   const name = map(word(), (name) => ({ name }));
@@ -102,11 +99,8 @@ function fn(): Expression<Fn> {
     if (!Array.isArray(args)) return null as never;
 
     return {
-      type: "fn",
-      value: {
-        name: name.name,
-        args,
-      },
+      name: name.name,
+      args,
     };
   });
 }
