@@ -78,8 +78,9 @@ type Fn = {
   name: string;
   args: Item[];
 };
+const fnName = regex(/[\w\[\]\.]+/);
 function fn(): Expression<Fn> {
-  const name = map(word(), (name) => ({ name }));
+  const name = map(fnName, (name) => ({ name }));
   const callArgs = map(
     opt(seq`${bracketStart}${opt(args())}${bracketEnd}`),
     (value) => {
