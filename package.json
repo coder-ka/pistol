@@ -1,6 +1,6 @@
 {
   "name": "@coder-ka/pistol",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "description": "PISTOL is subset language of LISTOL.",
   "bin": "./dist/bin.js",
   "main": "./dist/out.esm.js",
@@ -11,7 +11,7 @@
       "require": "./dist/out.cjs.js"
     }
   },
-  "types": "./types/main.d.ts",
+  "types": "./types/index.d.ts",
   "files": [
     "/dist",
     "/types"
