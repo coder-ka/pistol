@@ -24,20 +24,20 @@ const comma = ignore(str(","));
 const bracketStart = ignore(str("("));
 const bracketEnd = ignore(str(")"));
 
-const nullLiteral = map(str("null"), () => ({ type: "null" }));
+const nullLiteral = map(str("null"), () => ({ type: "null" as const }));
 const booleanLiteral = map(
   or(str("true"), str("false")),
   (value: "true" | "false") => ({
-    type: "boolean",
+    type: "boolean" as const,
     value,
   })
 );
 const stringLiteral = map(seq`"${regex(/([^"\\]|\\.)*/)}"`, ([value]) => ({
-  type: "string",
+  type: "string" as const,
   value,
 }));
 const numberLiteral = map(notEmpty(regex(/\d*(\.\d+)?/)), (value: string) => ({
-  type: "number",
+  type: "number" as const,
   value: Number(value),
 }));
 
@@ -50,7 +50,7 @@ const item = or(
       or(
         numberLiteral,
         map(lazy(fn), (value) => ({
-          type: "fn",
+          type: "fn" as const,
           value,
         }))
       )
