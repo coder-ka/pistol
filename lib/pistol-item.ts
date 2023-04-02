@@ -2,7 +2,6 @@ import {
   Expression,
   translate,
   seq,
-  word,
   opt,
   zom,
   lazy,
