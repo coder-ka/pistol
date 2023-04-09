@@ -77,7 +77,7 @@ type Fn = {
   name: string;
   args: Item[];
 };
-const fnName = regex(/[\w\[\]\.]+/);
+const fnName = regex(/[\w\[\]\.\:\@]+/);
 function fn(): Expression<Fn> {
   const name = map(fnName, (name) => ({ name }));
   const callArgs = map(
