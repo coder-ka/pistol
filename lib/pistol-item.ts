@@ -12,6 +12,7 @@ import {
   str,
   regex,
   GetExprValue,
+  until,
 } from "parten";
 
 const whitespaces = ignore(regex(/ +/));
@@ -41,45 +42,14 @@ const numberLiteral = map(notEmpty(regex(/\d*(\.\d+)?/)), (value: string) => ({
   value: Number(value),
 }));
 
-const item = or(
-  nullLiteral,
-  or(
-    booleanLiteral,
-    or(
-      stringLiteral,
-      or(
-        numberLiteral,
-        map(lazy(fn), (value) => ({
-          type: "fn" as const,
-          value,
-        }))
-      )
-    )
-  )
-);
-
-type Item = GetExprValue<typeof item>;
-function args(): Expression<Item[]> {
-  const rest = map(opt(seq`${trim(comma)}${opt(lazy(args))}`), (value) => {
-    if (value === undefined) return undefined;
-
-    return value[0];
-  });
-
-  return map(seq<Item | Item[] | undefined>`${trim(item)}${rest}`, (value) => {
-    return value.flatMap((x) =>
-      x === undefined ? [] : Array.isArray(x) ? x : [x]
-    );
-  });
-}
-
 type Fn = {
   name: string;
   args: Item[];
 };
-const fnName = regex(/[\w\[\]\.\:\@]+/);
 function fn(): Expression<Fn> {
-  const name = map(fnName, (name) => ({ name }));
+  const name = map(until(/[\(,]/, regex(/[^\s\(\),]+/)), (name) => ({
+    name,
+  }));
   const callArgs = map(
     opt(seq`${bracketStart}${opt(args())}${bracketEnd}`),
     (value) => {
@@ -104,6 +74,37 @@ function fn(): Expression<Fn> {
     };
   });
 }
+function args(): Expression<Item[]> {
+  const rest = map(opt(seq`${trim(comma)}${opt(lazy(args))}`), (value) => {
+    if (value === undefined) return undefined;
+
+    return value[0];
+  });
+
+  return map(seq<Item | Item[] | undefined>`${trim(item)}${rest}`, (value) => {
+    return value.flatMap((x) =>
+      x === undefined ? [] : Array.isArray(x) ? x : [x]
+    );
+  });
+}
+
+type Item = GetExprValue<typeof item>;
+const item = or(
+  nullLiteral,
+  or(
+    booleanLiteral,
+    or(
+      stringLiteral,
+      or(
+        numberLiteral,
+        map(lazy(fn), (value) => ({
+          type: "fn" as const,
+          value,
+        }))
+      )
+    )
+  )
+);
 
 export type PistolItem = Item[];
 const pistolItem = map(zom(or(whitespaces, item)), (value) =>
